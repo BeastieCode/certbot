@@ -5,31 +5,31 @@ On the new configuration, it is worth carrying out a test certificate generation
 ### How run it:
 
 #### 0. Preparation:
-Remember that ports ```80``` and ```443``` should be open to the world (disable Firewall for these ports).
+Remember that ports ```80``` and ```443``` should be open to the world.
 
 #### 1. Build image or pull from Docker Hub:
 ```
-docker build -t beastie/cert .
+docker build -t beastiecode/certbot .
 ```
 
 #### 2. Generating a certificate:
 ```
-docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert
+docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastiecode/certbot
 ```
 
 **For test:**
 ```
-docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert bin/sh /script/entrypoint-test.sh
+docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastiecode/certbot bin/sh /script/entrypoint-test.sh
 ```
 
 #### 3. Certificate renewal:
 ```
-docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert
+docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastiecode/certbot
 ```
 
 **For test:**
 ```
-docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert bin/sh /script/entrypoint-test.sh
+docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastiecode/certbot bin/sh /script/entrypoint-test.sh
 ```
 
 #### 4. Certificate renewal with cron:
@@ -39,7 +39,7 @@ crontab -e
 ```
 Set: 
 ````
-0 8 * * * /usr/bin/docker docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert >> /home/cron.log 2>&1
+0 8 * * * /usr/bin/docker docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastiecode/certbot >> /home/cron.log 2>&1
 ````
 Logs will be saved in file ```/home/cron.log```
 
