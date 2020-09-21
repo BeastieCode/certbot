@@ -1,53 +1,52 @@
 ## CERTBOT for Docker
-Generuje certyfikat Let's Encrypt dla domeny. Wygenerowane certyfikty zapisuje do folderu ```certy```
-Na nowej konfiguracji warto przeprowadzić najpierw testowe generowanie certyfikatów, nalezy pamiętac o limitach około 5-7 requestów na tydzień.
+Generates the Let's Encrypt certificate for the domain. The generated certificates are saved to the ```certy``` folder
+On the new configuration, it is worth carrying out a test certificate generation first, remember about the limits of about 5-7 requests per week for each domain.
 
-### Uruchomienie:
+### How run it:
 
-#### 0. Przygotowanie:
-Należy pamiętać aby porty ```80``` oraz ```443``` były otwarte na świat (wyłączyć dla  tych portów Firewall).
+#### 0. Preparation:
+Remember that ports `` 80 '' and `` 443 '' should be open to the world (disable Firewall for these ports).
 
-#### 1. Budowanie obrazu:
+#### 1. Build image or pull from Docker Hub:
 ```
 docker build -t beastie/cert .
 ```
 
-#### 2. Generowanie certyfikatu:
+#### 2. Generating a certificate:
 ```
 docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert
 ```
 
-Testowo:
+**For test:**
 ```
 docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert bin/sh /script/entrypoint-test.sh
 ```
 
-#### 3. Odnownienie certyfikatu:
+#### 3. Certificate renewal:
 ```
 docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert
 ```
 
-Testowo:
+**For test:**
 ```
 docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert bin/sh /script/entrypoint-test.sh
 ```
 
-#### 4. Odnowienie za pomocą cron:
-Logoujemy się jako root wpisujemy w terminal:
+#### 4. Certificate renewal with cron:
+Log in to the machine as root and put commad:
 ```
 crontab -e
 ```
-Ustawiamy 
+Set: 
 ````
 0 8 * * * /usr/bin/docker docker container run --rm -it -p 80:80 -e CERTBOT_EMAIL="test@example.com" -e CERTBOT_RENEW=true -e CERTBOT_DOMAIN="example.dev" -v $(pwd)/certy:/etc/letsencrypt beastie/cert >> /home/cron.log 2>&1
 ````
+Logs will be saved in file ```/home/cron.log```
 
-Logi będa zapisywane w pliku ```/home/cron.log```
+#### 5. Final STEP - Nginx configuration:
 
-#### 5. Konfiguracja nginx
-
-- Pamaiętaj podmienić ```DOMAIN_NAME``` na właściwą nazwę
-- Pamiętaj dodać folder z certami jako wolumen dockera ```-v $(pwd)/certy:/etc/letsencrypt```
+- Remember replace ```DOMAIN_NAME``` on correct domain name
+- If you also use docker for run nginx notice have to add volume with certificates to Nginx container, for example: ```-v $(pwd)/certy:/etc/letsencrypt```
 
 ```
 server {
