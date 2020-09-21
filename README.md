@@ -11,6 +11,9 @@ Remember that ports ```80``` and ```443``` should be open to the world.
 ```
 docker build -t beastiecode/certbot .
 ```
+```
+docker pull beastiecode/certbot
+```
 
 #### 2. Generating a certificate:
 ```
@@ -45,7 +48,7 @@ Logs will be saved in file ```/home/cron.log```
 
 #### 5. Final STEP - Nginx configuration:
 
-- Remember replace ```DOMAIN_NAME``` on correct domain name
+- Remember replace ```DOMAIN_NAME``` correct domain name
 - If you also use docker for run nginx notice have to add volume with certificates to Nginx container, for example: ```-v $(pwd)/certy:/etc/letsencrypt```
 
 ```
