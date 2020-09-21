@@ -5,7 +5,7 @@ On the new configuration, it is worth carrying out a test certificate generation
 ### How run it:
 
 #### 0. Preparation:
-Remember that ports `` 80 '' and `` 443 '' should be open to the world (disable Firewall for these ports).
+Remember that ports ```80``` and ```443``` should be open to the world (disable Firewall for these ports).
 
 #### 1. Build image or pull from Docker Hub:
 ```
